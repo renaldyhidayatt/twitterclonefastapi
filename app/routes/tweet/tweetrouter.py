@@ -28,10 +28,6 @@ def gettweet(id: int, current_usr: str = Depends(Token.get_currentUser), db: Ses
 def create(tweet: TweetSchema, current_usr: str = Depends(Token.get_currentUser) ,db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == current_usr).first()
 
-    id = user.id
-
-    print(id)
-
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
@@ -39,7 +35,7 @@ def create(tweet: TweetSchema, current_usr: str = Depends(Token.get_currentUser)
 
     tweet = Tweet(
         status=tweet.status,
-        tweetBy=id,
+        tweetBy=user.id,
     )
     db.add(tweet)
     db.commit()
