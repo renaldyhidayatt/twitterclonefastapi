@@ -15,5 +15,4 @@ class User(Base):
     country = Column(String, nullable=True)
     website = Column(String, nullable=True)
 
-    def __repr__(self) -> str:
-        return "<User(id='%s', name='%s', email='%s')>" % (self.id, self.name, self.email)
+    
