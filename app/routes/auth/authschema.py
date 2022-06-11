@@ -2,6 +2,9 @@ from pydantic import BaseModel
 
 
 class RegisterUser(BaseModel):
-    name: str
+    firstName: str
+    lastName: str
+    username: str
     email: str
     password: str
+    
