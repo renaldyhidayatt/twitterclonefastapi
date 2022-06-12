@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from app.config.database import get_db
+from app.core.database import get_db
 from sqlalchemy.orm import Session
 from app.database.models.Retweet import Retweet
 from app.database.models.Users import User
 from app.routes.retweet.retweetschema import RetweetSchema
 
-from app.utils.token import Token
+from app.core.token import Token
 
 router = APIRouter(prefix="/retweet", tags=["Retweet"])
 

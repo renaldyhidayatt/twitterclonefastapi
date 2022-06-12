@@ -11,6 +11,9 @@ passlib = "*"
 bcrypt = "*"
 pyjwt = "*"
 python-multipart = "*"
+python-dotenv = "*"
+psycopg2 = "*"
+alembic = "*"
 
 [dev-packages]
 black = "*"

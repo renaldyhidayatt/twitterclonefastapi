@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.sql import func
-from app.config.database import Base
+from app.core.database import Base
 
 class Tweet(Base):
     __tablename__ = "tweet"

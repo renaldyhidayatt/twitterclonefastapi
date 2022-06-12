@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, Response, HTTPException
-from app.config.database import get_db
+from app.core.database import get_db
 from sqlalchemy.orm import Session
-from app.utils.token import Token
+from app.core.token import Token
 from app.database.models.Users import User
 from app.database.models.Messages import Messages
 
@@ -16,7 +16,7 @@ def getMessages(user_id: int, db: Session = Depends(get_db), current_usr: str = 
 @router.post("/createMessage/{user_id}")
 def createMessage(user_id: int, db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser),  message: Messages = Depends()):
     user = db.query(User).filter(User.id == current_usr).first()
-    message = Messages(messageBy=user.id, messageFrom=user_id, message=message.message)
+    message = Messages(messageTo=user.id, messageFrom=user_id, message=message.message)
     db.add(message)
     db.commit()
 

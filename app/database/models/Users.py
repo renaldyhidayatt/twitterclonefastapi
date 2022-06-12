@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from app.config.database import Base
+from app.core.database import Base
 
 class User(Base):
     __tablename__ = "user"
@@ -9,8 +9,8 @@ class User(Base):
     username = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
-    profileImage = Column(String, nullable=False, default="defaultProfilePic.png")
-    profileCover = Column(String, nullable=False, default="backgroundCoverPic.svg")
+    profileImage = Column(String, nullable=True, default="defaultProfilePic.png")
+    profileCover = Column(String, nullable=True, default="backgroundCoverPic.svg")
     bio = Column(String, nullable=True)
     country = Column(String, nullable=True)
     website = Column(String, nullable=True)

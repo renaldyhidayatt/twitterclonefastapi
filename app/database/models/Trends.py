@@ -1,5 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
-from app.config.database import Base
+from app.core.database import Base
 
 class Trends(Base):
     __tablename__ = "trends"

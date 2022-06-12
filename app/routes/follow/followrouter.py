@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, status, Response, HTTPException
-from app.config.database import get_db
+from app.core.database import get_db
 from sqlalchemy.orm import Session
 from app.database.models.Follow import Follow
 from app.database.models.Users import User
 
-from app.utils.token import Token
+from app.core.token import Token
 
 router = APIRouter(prefix="/follow", tags=["Follow"])
 

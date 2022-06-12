@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, status, Response, HTTPException
 from app.routes.auth.authschema import RegisterUser
 from app.database.models.Users import User
-from app.config.database import get_db
-from app.utils.hashpassword import HashPassword
-from app.utils.token import Token
+from app.core.database import get_db
+from app.core.hashpassword import HashPassword
+from app.core.token import Token
 from sqlalchemy.orm import Session
 from .userschema import UserSchema
 
