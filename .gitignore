@@ -7,9 +7,11 @@ __pycache__/
 
 # C extensions
 *.so
+Pipfile.lock
 
 # Distribution / packaging
 .Python
+# tests/
 build/
 develop-eggs/
 dist/

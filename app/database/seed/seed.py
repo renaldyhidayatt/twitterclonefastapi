@@ -8,105 +8,102 @@ from app.database.models.Follow import Follow
 from app.database.models.Messages import Messages
 from app.database.models.Retweet import Retweet
 
-def createuser():
-    session = Session(engine)
-    user = User(
-        firstName="John",
-        lastName="Doe",
-        username="johndoe",
-        email="last@example.com",
-        password="johndoe",
-    )
-    session.add(user)
-    session.commit()
-    session.close()
+class SeedConfig:
+    def __init__(self, session):
+        self.session = session
+    
+    def createuser(self):
+        user = User(
+            firstName="John",
+            lastName="Doe",
+            username="johndoe",
+            email="last@example.com",
+            password="johndoe",
+        )
+        self.session.add(user)
+        self.session.commit()
 
-def createuser2():
-    session = Session(engine)
-    user = User(
-        firstName="John2",
-        lastName="Doe",
-        username="johndoe2",
-        email="johndoe2@example.com",
-        password="johndoe",
-    )
-    session.add(user)
-    session.commit()
-    session.close()
+    def createuser2(self):
+        user = User(
+            firstName="John2",
+            lastName="Doe",
+            username="johndoe2",
+            email="johndoe2@example.com",
+            password="johndoe",
+        )
+        self.session.add(user)
+        self.session.commit()
 
-def createTweet():
-    session = Session(engine)
-    tweet = Tweet(
+    def createTweet(self):
+        tweet = Tweet(
         tweetBy=1,
         status="This is a tweet"
-    )
-    session.add(tweet)
-    session.commit()
-    session.close()
+        )
+        self.session.add(tweet)
+        self.session.commit()
+
+    def createLikes(self):
+        likes = Likes(
+            likeBy=1,
+            likeOn=1
+        )
+        self.session.add(likes)
+        self.session.commit()
+
+    def createComment(self):
+        comment = Comment(
+            commentBy=1,
+            commentOn=1,
+            comment="This is a comment"
+        )
+        self.session.add(comment)
+        self.session.commit()
+
+    def createFollow(self):
+        follow = Follow(
+            sender=1,
+            receiver=1
+        )
+        self.session.add(follow)
+        self.session.commit()
+
+    def createMessages(self):
+        session = Session(engine)
+        messages = Messages(
+            messageTo=1,
+            messageFrom=2,
+            message="This is a message"
+        )
+        session.add(messages)
+        session.commit()
+    def createRetweet(self):
+        retweet = Retweet(
+            retweetBy=1,
+            retweetFrom=1,
+            status="This is a retweet"
+        )
+        self.session.add(retweet)
+        self.session.commit()
 
 
-def createLikes():
-    session = Session(engine)
-    likes = Likes(
-        likeBy=1,
-        likeOn=1
-    )
-    session.add(likes)
-    session.commit()
-    session.close()
 
 
-def createComment():
-    session = Session(engine)
-    comment = Comment(
-        commentBy=1,
-        commentOn=1,
-        comment="This is a comment"
-    )
-    session.add(comment)
-    session.commit()
-    session.close()
 
-def createFollow():
-    session = Session(engine)
-    follow = Follow(
-        sender=1,
-        receiver=1
-    )
-    session.add(follow)
-    session.commit()
-    session.close()
+SessionConfig = Session(engine)
+Seed = SeedConfig(SessionConfig)
 
 
-def createMessages():
-    session = Session(engine)
-    messages = Messages(
-        messageTo=1,
-        messageFrom=2,
-        message="This is a message"
-    )
-    session.add(messages)
-    session.commit()
-    session.close()
 
-def createRetweet():
-    session = Session(engine)
-    retweet = Retweet(
-        retweetBy=1,
-        retweetFrom=1,
-        status="This is a retweet"
-    )
-    session.add(retweet)
-    session.commit()
-    session.close()
+
+
 
 if __name__ == "__main__":
-    createuser()
-    createuser2()
-    createTweet()
-    createLikes()
-    createComment()
-    createFollow()
-    createMessages()
-    createRetweet()
+    Seed.createuser()
+    Seed.createuser2()
+    Seed.createTweet()
+    Seed.createLikes()
+    Seed.createComment()
+    Seed.createFollow()
+    Seed.createMessages()
+    Seed.createRetweet()
     print("Database seeded")

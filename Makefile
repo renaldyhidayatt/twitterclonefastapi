@@ -2,7 +2,7 @@ run:
 	python main.py
 
 seed:
-	python app/database/seed/main.py
+	python app/database/seed/seed.py
 
 migration:
-	python app/database/migration.py
+	alembic upgrade head

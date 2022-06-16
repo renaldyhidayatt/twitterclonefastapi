@@ -12,8 +12,10 @@ bcrypt = "*"
 pyjwt = "*"
 python-multipart = "*"
 python-dotenv = "*"
-psycopg2 = "*"
 alembic = "*"
+psycopg2-binary = "*"
+pytest = "*"
+requests = "*"
 
 [dev-packages]
 black = "*"
