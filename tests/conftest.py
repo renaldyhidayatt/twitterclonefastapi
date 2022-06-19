@@ -4,11 +4,12 @@ from typing import Any, Generator
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 
 from app.core.database import Base, get_db
 from app.routes.main import main_router
+from .utils.users import authTokenFromEmail
 
 def start_application():
     app = FastAPI()
@@ -59,4 +60,12 @@ def client(
     app.dependency_overrides[get_db] = _get_test_db
     with TestClient(app) as client:
         yield client
+
+
+
+@pytest.fixture(scope="module")
+def auth_user_tokenheader(client: TestClient, db_session: Session):
+    return authTokenFromEmail(
+        client=client, username="testuser", db=db_session
+    )
 

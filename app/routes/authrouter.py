@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from app.core.hashpassword import HashPassword
 from app.core.token import Token
 from sqlalchemy.orm import Session
@@ -18,9 +20,17 @@ async def hello():
 async def register(request: UserCreateSchema, db: Session = Depends(get_db)):
     try:
         service = ServiceUser(db)
-        service.createuser(request)
-        return Response(
-            content="Berhasil membuat user", status_code=status.HTTP_201_CREATED
+        user = service.createuser(request)
+        
+        response = {
+            "message": "Successfully created user",
+            "user": user
+        }
+        json_ = jsonable_encoder(response)
+
+        return JSONResponse(
+            content=json_,
+            status_code=status.HTTP_201_CREATED
         )
     except Exception as e:
         raise HTTPException(

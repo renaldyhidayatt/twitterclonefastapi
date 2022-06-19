@@ -6,3 +6,6 @@ seed:
 
 migration:
 	alembic upgrade head
+
+tests:
+	pytest --pyargs tests

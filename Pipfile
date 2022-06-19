@@ -17,6 +17,7 @@ psycopg2-binary = "*"
 pytest = "*"
 requests = "*"
 databases = "*"
+pytest-anyio = "*"
 
 [dev-packages]
 black = "*"
