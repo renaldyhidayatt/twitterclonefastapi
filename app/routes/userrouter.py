@@ -5,6 +5,7 @@ from app.core.database import get_db
 from app.core.hashpassword import HashPassword
 from app.core.token import Token
 from sqlalchemy.orm import Session
+from app.repository.repo_user import RepoUser
 from app.schema.user import UserCreateSchema, UserResponseSchema, UserUpdateSchema
 from app.service.service_user import ServiceUser
 

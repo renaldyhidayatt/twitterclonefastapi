@@ -8,6 +8,7 @@ from app.database.models.Comment import Comment
 from app.database.models.Follow import Follow
 from app.database.models.Messages import Messages
 from app.database.models.Retweet import Retweet
+from app.core.hashpassword import HashPassword
 
 class SeedConfig:
     def __init__(self, session):
@@ -19,10 +20,11 @@ class SeedConfig:
             lastName="Doe",
             username="johndoe",
             email="last@example.com",
-            password="johndoe",
+            password=HashPassword.create_hash("johndoe"),
         )
         self.session.add(user)
         self.session.commit()
+        return user
 
     def createuser2(self):
         user = User(
@@ -30,18 +32,21 @@ class SeedConfig:
             lastName="Doe",
             username="johndoe2",
             email="johndoe2@example.com",
-            password="johndoe",
+            password=HashPassword.create_hash("johndoe2"),
         )
         self.session.add(user)
         self.session.commit()
 
+        return user
+
     def createTweet(self):
         tweet = Tweet(
-        tweetBy_id=1,
-        status="This is a tweet"
+            tweetBy_id=1,
+            status="This is a tweet"
         )
         self.session.add(tweet)
         self.session.commit()
+
 
     def createLikes(self):
         likes = Likes(
@@ -59,6 +64,7 @@ class SeedConfig:
         )
         self.session.add(trend)
         self.session.commit()
+        return trend
 
     def createComment(self):
         comment = Comment(
@@ -78,14 +84,13 @@ class SeedConfig:
         self.session.commit()
 
     def createMessages(self):
-        session = Session(engine)
         messages = Messages(
             messageTo=1,
             messageFrom=2,
             message="This is a message"
         )
-        session.add(messages)
-        session.commit()
+        self.session.add(messages)
+        self.session.commit()
     def createRetweet(self):
         retweet = Retweet(
             retweetBy_id=1,
@@ -100,6 +105,7 @@ class SeedConfig:
 
 
 SessionConfig = Session(engine)
+
 Seed = SeedConfig(SessionConfig)
 
 
@@ -116,4 +122,5 @@ if __name__ == "__main__":
     Seed.createFollow()
     Seed.createMessages()
     Seed.createRetweet()
+    Seed.createTrend()
     print("Database seeded")

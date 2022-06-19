@@ -1,15 +1,16 @@
+from typing import List
 from fastapi import APIRouter, Depends, status, Response, HTTPException
 from app.core.database import get_db
 from sqlalchemy.orm import Session
 from app.core.token import Token
 from app.service.service_tweet import ServiceTweet
-from ..schema.tweet import TweetSchema
+from ..schema.tweet import TweetCreateSchema, TweetResponseSchema
 from app.repository.repo_tweet import RepoTweet
 
 
 router = APIRouter(prefix="/tweet", tags=["Tweet"])
 
-@router.get("/")
+@router.get("/", response_model=List[TweetResponseSchema])
 def tweets(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
     try:
         service = ServiceTweet(db)
@@ -21,7 +22,7 @@ def tweets(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_c
         )
     
 
-@router.get("/tweetbyme")
+@router.get("/tweetbyme", response_model=List[TweetResponseSchema])
 def tweet(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
     try:
         repo = RepoTweet(db)
@@ -55,7 +56,7 @@ def getTweetId(id: int, current_usr: str = Depends(Token.get_currentUser), db: S
         )
 
 @router.post("/create")
-def create(request: TweetSchema, current_usr: str = Depends(Token.get_currentUser) ,db: Session = Depends(get_db)):
+def create(request: TweetCreateSchema, current_usr: str = Depends(Token.get_currentUser) ,db: Session = Depends(get_db)):
     try:
 
         service= ServiceTweet(db)

@@ -4,9 +4,8 @@ from app.core.token import Token
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from app.core.database import get_db
-from app.schema.user import UserCreateSchema, UserResponseLoginSchema
-from app.repository.repo_user import RepoUser
-
+from app.schema.user import UserCreateSchema
+from app.service.service_user import ServiceUser
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -17,38 +16,47 @@ async def hello():
 
 @router.post("/register")
 async def register(request: UserCreateSchema, db: Session = Depends(get_db)):
-    repo = RepoUser(db)
-    repo.createuser(request)
+    try:
+        service = ServiceUser(db)
+        service.createuser(request)
+        return Response(
+            content="Berhasil membuat user", status_code=status.HTTP_201_CREATED
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"
+        )
 
-    return Response(
-        content="Berhasil membuat user", status_code=status.HTTP_201_CREATED
-    )
 
 
 @router.post("/login")
 async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    repo = RepoUser(db)
-    user = repo.get_username(request.username)
+    try:
+        service = ServiceUser(db)
+        user = service.get_username(request.username)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
+            )
 
-    if not user:
+        if not HashPassword.verify_hash(user.password, request.password):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail=f"Incorrect password"
+            )
+
+        access_token = Token.create_access_token(data={"sub": user.username})
+        
+        response = {
+            "firstName": user.firstName,
+            "lastName": user.lastName,
+            "username": user.username,
+            "email": user.email,
+            "jwtToken": access_token,
+        }
+
+        return response
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"
         )
-
-    if not HashPassword.verify_hash(user.password, request.password):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Incorrect password"
-        )
-
-    access_token = Token.create_access_token(data={"sub": user.username})
-    
-    response = {
-        "firstName": user.firstName,
-        "lastName": user.lastName,
-        "username": user.username,
-        "email": user.email,
-        "jwtToken": access_token,
-    }
-
-    return response
 

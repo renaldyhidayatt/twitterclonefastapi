@@ -56,3 +56,10 @@ class RepoFollow:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Unfollow"
             )
+
+    
+    def getFollowers(self, followid, user_id: int):
+        followers = self.session.query(Follow).filter(Follow.sender == user_id).filter(Follow.receiver == followid).first()
+        return followers
+
+    

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Any, Optional
 
 class UserSchema(BaseModel):
     firstName: Optional[str]
@@ -34,7 +34,7 @@ class UserUpdateSchema(UserSchema):
     website: Optional[str]
 
 
-class UserResponseSchema(UserSchema):
+class UserResponseSchema(BaseModel):
     id: int
     firstName: str
     lastName: str
@@ -42,18 +42,18 @@ class UserResponseSchema(UserSchema):
     email: str
     profileImage: str
     profileCover: str
-    bio: str
-    country: str
-    website: str
+    bio: Optional[str]
+    country: Optional[str]
+    website: Optional[str]
 
     class Config:
         orm_mode = True
 
 class UserResponseLoginSchema(UserSchema):
-    firstname: Optional[str]
-    lastname: Optional[str]
-    username: Optional[str]
-    email: Optional[str]
+    firstname: str
+    lastname: str
+    username: str
+    email: str
     jwtToken: str
 
 

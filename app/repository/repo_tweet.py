@@ -4,7 +4,7 @@ from ..database.models.Tweet import Tweet
 from ..database.models.Users import User
 from ..database.models.Trends import Trends
 from sqlalchemy.orm import joinedload
-from ..schema.tweet import TweetSchema
+from ..schema.tweet import TweetCreateSchema
 
 class RepoTweet:
     def __init__(self, session) -> None:
@@ -29,7 +29,7 @@ class RepoTweet:
             )
         return tweet
 
-    def create(self, request: TweetSchema, current_user):
+    def create(self, request: TweetCreateSchema, current_user):
         user = self.session.query(User).filter(User.username == current_user).first()
         if not user:
             raise HTTPException(

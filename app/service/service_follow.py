@@ -18,3 +18,6 @@ class ServiceFollow(RepoFollow):
 
     def unfollow(self, followid, current_usr):
         return super().unfollow(followid, current_usr)
+
+    def getFollowers(self, followid, user_id: int):
+        return super().getFollowers(followid, user_id)
