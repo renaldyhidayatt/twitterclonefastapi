@@ -14,14 +14,19 @@ class RepoTrends:
         trend = self.session.query(Trends).options(joinedload(Trends.tweet)).all()
         return trend
     
-    def create(self, trend: TrendSchema, current_usr: str):
+    def create(self, trend: TrendSchema, twitter_id,current_usr: str):
         user = self.session.query(User).filter(User.username == current_usr).first()
-        tweet = self.session.query(Tweet).filter(Tweet.tweetBy == user.id).first()
+        tweet = self.session.query(Tweet).filter(Tweet.id == twitter_id).first()
 
     
         if not user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
+                status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Username"
+            )
+
+        if not tweet:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Twitter"
             )
 
         trend = Trends(
@@ -29,8 +34,8 @@ class RepoTrends:
             user_id=user.id,
             tweet_id=tweet.id,
         )
-        self.db.add(trend)
-        self.db.commit()
+        self.session.add(trend)
+        self.session.commit()
         
         return trend
 

@@ -23,22 +23,24 @@ def trends(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_c
         )
 
 
-@router.post("/create")
-def create(trend: TrendCreateSchema, current_usr: str = Depends(Token.get_currentUser),db: Session = Depends(get_db)):
+@router.post("/create/{twitter_id}")
+def create(trend: TrendCreateSchema, twitter_id,current_usr: str = Depends(Token.get_currentUser),db: Session = Depends(get_db)):
     try:
         service = ServiceTrends(db)
-        return service.create(trend, current_usr)
+        service.create(trend, twitter_id,current_usr)
+        return Response(status_code=status.HTTP_201_CREATED, content="Trend Created")
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Username"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"
         )
 
 
-@router.get("/count")
-def count(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
+@router.get("/count/{hashtag}")
+def count(hashtag,db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
     try:
         service = ServiceTrends(db)
-        return service.countTrends()
+        tweet= service.countTrends(hashtag=hashtag)
+        return tweet
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"

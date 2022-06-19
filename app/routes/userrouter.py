@@ -27,7 +27,7 @@ async def get_users(db: Session = Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"
         )
 
 @router.post("/create")
@@ -82,7 +82,7 @@ async def update(request: UserUpdateSchema, db: Session = Depends(get_db), curre
     try:
 
         service = ServiceUser(db)
-        service.updateuser(request, current_usr)
+        service.updateuser(current_usr, request)
     
         return Response(status_code=status.HTTP_200_OK, content="Berhasi; update user")
     except Exception as e:

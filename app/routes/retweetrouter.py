@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, Response
+from requests import Response
 from app.core.database import get_db
 from sqlalchemy.orm import Session
 from app.schema.retweets import RetweetSchema
@@ -18,10 +19,10 @@ def getRetweetsCount(tweetid: int,user_id: int, db: Session = Depends(get_db), c
         )
 
 @router.get("/checkRetweet/{tweetid}")
-def checkRetweet(tweetid: int,user_id: int, db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
+def checkRetweet(tweetid: int,db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
     try:
         service = ServiceRetweet(db)
-        return service.checkRetweet(tweetid, user_id)
+        return service.checkRetweet(tweetid)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"
@@ -29,7 +30,7 @@ def checkRetweet(tweetid: int,user_id: int, db: Session = Depends(get_db), curre
 
 
 @router.post("/createRetweet/{tweetid}")
-def createRetweet(tweetid: int, db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser),  retweet: RetweetSchema = Depends()):
+def createRetweet(retweet: RetweetSchema,tweetid: int, db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
     try:
         service = ServiceRetweet(db)
         return service.createRetweet(tweetid, retweet, current_usr)
@@ -45,7 +46,8 @@ def createRetweet(tweetid: int, db: Session = Depends(get_db), current_usr: str 
 def deleteRetweet(tweetid: int, db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
     try:
         service = ServiceRetweet(db)
-        return service.deleteRetweet(tweetid)
+        service.deleteRetweet(tweetid)
+        return Response(status=status.HTTP_200_OK, content="Retweet deleted")
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"

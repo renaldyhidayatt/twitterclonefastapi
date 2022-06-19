@@ -60,7 +60,7 @@ class SeedConfig:
         trend = Trends(
             user_id=1,
             tweet_id=1,
-            hashtag="This is a trend"
+            hashtag="dota2"
         )
         self.session.add(trend)
         self.session.commit()

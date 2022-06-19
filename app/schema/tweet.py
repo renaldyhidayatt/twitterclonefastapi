@@ -3,9 +3,9 @@ from pydantic import BaseModel
 from .user import UserResponseSchema
 
 class TweetSchema(BaseModel):
-    status: str
-    tweetBy_id: int
-    postedOn: str
+    status: Optional[str]
+    tweetBy_id: Optional[str]
+    postedOn: Optional[str]
 
 
 class TweetCreateSchema(TweetSchema):

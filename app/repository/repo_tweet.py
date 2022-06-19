@@ -42,6 +42,7 @@ class RepoTweet:
         )
         self.session.add(tweet)
         self.session.commit()
+        self.session.refresh(tweet)
 
         return tweet
 

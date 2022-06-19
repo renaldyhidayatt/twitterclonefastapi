@@ -6,6 +6,8 @@ from app.core.token import Token
 from app.service.service_tweet import ServiceTweet
 from ..schema.tweet import TweetCreateSchema, TweetResponseSchema
 from app.repository.repo_tweet import RepoTweet
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 
 router = APIRouter(prefix="/tweet", tags=["Tweet"])
@@ -15,7 +17,9 @@ def tweets(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_c
     try:
         service = ServiceTweet(db)
         tweets = service.tweets()
-        return tweets
+        
+        
+        return JSONResponse(content=jsonable_encoder(tweets), status_code=status.HTTP_200_OK)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"
@@ -60,11 +64,14 @@ def create(request: TweetCreateSchema, current_usr: str = Depends(Token.get_curr
     try:
 
         service= ServiceTweet(db)
-        service.create(request, current_usr)
+        tweet= service.create(request, current_usr)
 
-        return Response(
-            content="Berhasil membuat tweet", status_code=status.HTTP_201_CREATED
-        )
+        response = {
+            "message": "Successfully created tweet",
+            "tweet": tweet
+        }
+
+        return JSONResponse(content=jsonable_encoder(response), status_code=status.HTTP_201_CREATED)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid {e}"

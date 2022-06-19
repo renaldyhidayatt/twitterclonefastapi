@@ -9,8 +9,11 @@ class ServiceTrends(RepoTrends):
     def trends(self):
         return super().trends()
 
-    def create(self, trend: TrendSchema, current_usr: str):
-        return super().create(trend, current_usr)
+    def create(self, trend: TrendSchema, twitter_id,current_usr: str):
+        return super().create(trend, twitter_id,current_usr)
 
     def gettrend(self, trend_id):
         return super().gettrend(trend_id)
+
+    def countTrends(self, hashtag):
+        return super().countTrends(hashtag)

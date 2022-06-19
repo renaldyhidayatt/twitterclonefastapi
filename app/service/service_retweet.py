@@ -1,5 +1,5 @@
 from ..repository.repo_retweet import RepoRetweet
-
+from ..schema.retweets import RetweetSchema
 
 class ServiceRetweet(RepoRetweet):
     def __init__(self, session):
@@ -9,17 +9,13 @@ class ServiceRetweet(RepoRetweet):
         retweets = super().getRetweetsCount(tweetid, user_id)
         return retweets
 
-    def checkRetweet(self, tweetid: int, user_id: int):
-        retweets = super().checkRetweet(tweetid, user_id)
+    def checkRetweet(self, tweetid: int):
+        retweets = super().checkRetweet(tweetid)
         return retweets
 
-    def createRetweet(self, tweetid: int, retweet, current_usr):
-        retweet = super().createRetweet(tweetid, retweet.status)
-        return retweet
-
-    def getRetweets(self, tweetid: int):
-        retweets = super().getRetweets(tweetid)
-        return retweets
+    def createRetweet(self, tweetid: int, retweet: RetweetSchema, current_usr):
+        return super().createRetweet(tweetid, retweet, current_usr)
+   
 
     def deleteRetweet(self, tweetid: int):
         retweet = super().deleteRetweet(tweetid)
