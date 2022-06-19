@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from app.core.database import Base, engine
 from app.core.config import Settings
 from app.routes.main import main_router
+from app.core.check_connect import check_db_connected, check_db_disconnected
 
 
 app = FastAPI(
@@ -14,7 +15,14 @@ app = FastAPI(
 
 @app.on_event("startup")
 async def runtimestartup():
+    await check_db_connected()
     Base.metadata.create_all(bind=engine)
+    
+
+
+@app.on_event("shutdown")
+async def runtimestop():
+    await check_db_disconnected()
 
 @app.get("/")
 def root():

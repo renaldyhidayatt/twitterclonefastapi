@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database.models.Users import User
 from app.database.models.Tweet import Tweet
 from app.database.models.Likes import Likes
+from app.database.models.Trends import Trends
 from app.database.models.Comment import Comment
 from app.database.models.Follow import Follow
 from app.database.models.Messages import Messages
@@ -36,7 +37,7 @@ class SeedConfig:
 
     def createTweet(self):
         tweet = Tweet(
-        tweetBy=1,
+        tweetBy_id=1,
         status="This is a tweet"
         )
         self.session.add(tweet)
@@ -50,10 +51,19 @@ class SeedConfig:
         self.session.add(likes)
         self.session.commit()
 
+    def createTrend(self):
+        trend = Trends(
+            user_id=1,
+            tweet_id=1,
+            hashtag="This is a trend"
+        )
+        self.session.add(trend)
+        self.session.commit()
+
     def createComment(self):
         comment = Comment(
-            commentBy=1,
-            commentOn=1,
+            commentBy_id=1,
+            commentOn_id=1,
             comment="This is a comment"
         )
         self.session.add(comment)
@@ -78,8 +88,8 @@ class SeedConfig:
         session.commit()
     def createRetweet(self):
         retweet = Retweet(
-            retweetBy=1,
-            retweetFrom=1,
+            retweetBy_id=1,
+            retweetFrom_id=1,
             status="This is a retweet"
         )
         self.session.add(retweet)

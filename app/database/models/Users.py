@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 
 class User(Base):
@@ -14,5 +15,9 @@ class User(Base):
     bio = Column(String, nullable=True)
     country = Column(String, nullable=True)
     website = Column(String, nullable=True)
+    tweets = relationship("Tweet", back_populates="tweetBy")
+    retweet = relationship("Retweet", back_populates="retweetBy")
+    comment = relationship("Comment", back_populates="commentBy")
+
 
     

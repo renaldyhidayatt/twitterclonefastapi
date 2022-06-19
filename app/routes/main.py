@@ -1,13 +1,6 @@
 from fastapi import APIRouter
-from .auth import authrouter
-from .user import userrouter
-from .tweet import tweetrouter
-from .likes import likesrouter
-from .trends import trendsrouter
-from .retweet import retweetrouter
-from .follow import followrouter
+from . import authrouter, userrouter, tweetrouter, trendsrouter, retweetrouter, messagerouter, likesrouter, followrouter
 from .comment import commentrouter
-from .message import messagerouter
 
 main_router = APIRouter()
 

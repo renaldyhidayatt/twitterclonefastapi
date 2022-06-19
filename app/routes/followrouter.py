@@ -74,10 +74,5 @@ def followinglists(db: Session = Depends(get_db), current_usr: str = Depends(Tok
     followinglists = db.query(Follow).filter(Follow.sender == user.id).all()
     return followinglists
 
-@router.get("/followerlists")
-def followerlists(db: Session = Depends(get_db), current_usr: str = Depends(Token.get_currentUser)):
-    user = db.query(User).filter(User.username == current_usr).first()
-    followerlists = db.query(Follow).filter(Follow.receiver == user.id).all()
-    return followerlists
 
 

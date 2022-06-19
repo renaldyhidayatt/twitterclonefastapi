@@ -16,6 +16,7 @@ alembic = "*"
 psycopg2-binary = "*"
 pytest = "*"
 requests = "*"
+databases = "*"
 
 [dev-packages]
 black = "*"

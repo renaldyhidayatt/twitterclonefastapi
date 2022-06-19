@@ -1,13 +1,15 @@
-studentManagement.db
+twitter.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+.vscode
 # C extensions
 *.so
 Pipfile.lock
+docker-compose.yml
+Dockerfile
 
 # Distribution / packaging
 .Python
