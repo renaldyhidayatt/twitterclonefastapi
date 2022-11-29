@@ -36,7 +36,7 @@ def test_user_update(authclient: TestClient):
         "password": "dargon",
         "profileImage": "dargon.png",
         "profileCover": "dargonposter.png",
-        "bio": "bisa rust lah",
+        "bio": "as",
         "country": "dragon",
         "website": "postaot"
     })
