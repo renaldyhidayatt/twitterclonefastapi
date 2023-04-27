@@ -1,20 +1,21 @@
+from sqlalchemy.orm import Session
 from ..repository.repo_user import  RepoUser
 
 
 class ServiceUser(RepoUser):
-    def __init__(self, session):
-        super().__init__(session)
+    def __init__(self, session: Session):
+        self.user_repository = RepoUser(session)
     
     def getusers(self):
-        return super().getAll()
+        return self.user_repository.getAll()
 
     def getusername(self, username):
-        return super().get_username(username)
+        return self.user_repository.get_username(username)
 
     def updateuser(self, username, request):
-        return super().updateuser(username, request)
+        return self.user_repository.updateuser(username, request)
 
     def deleteuser(self, username):
-        return super().deleteUser(username)
+        return self.user_repository.deleteUser(username)
 
     

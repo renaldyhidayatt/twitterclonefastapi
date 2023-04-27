@@ -1,10 +1,10 @@
-from fastapi import HTTPException, status, Response
-from sqlalchemy.orm import joinedload
+from fastapi import status, Response
+from sqlalchemy.orm import joinedload, Session
 from app.database.models.Comment import Comment
 from app.database.models.Users import User
 
 class RepoComment:
-    def __init__(self, session) -> None:
+    def __init__(self, session: Session) -> None:
         self.session = session
 
 
@@ -15,14 +15,11 @@ class RepoComment:
 
     def wasCommentBy(self, commentBy: int, commentOn: int):
         comments = self.session.query(Comment).options(joinedload(Comment.commentBy)).filter(Comment.commentBy_id == commentBy).filter(Comment.comment_on == commentOn).first()
-
-        if not comments:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
-
+        
         return comments
 
     def createComment(self, tweetid: int, comment: Comment, current_user: str):
-        user = self.db.query(User).filter(User.id == current_user).first()
+        user = self.session.query(User).filter(User.id == current_user).first()
         comment = Comment(commentBy_id=user.id, commentOn_id=tweetid, comment=comment.comment)
         self.session.add(comment)
         self.session.commit()
@@ -31,8 +28,6 @@ class RepoComment:
 
     def deleteComment(self, commentid: int):
         comment = self.session.query(Comment).filter(Comment.id == commentid).first()
-        if not comment:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
 
         self.session.delete(comment)
         self.session.commit()

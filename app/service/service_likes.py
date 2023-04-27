@@ -1,21 +1,22 @@
+from sqlalchemy.orm import Session
 from ..repository.repo_likes import RepoLikes
 
 
 class ServiceLikes(RepoLikes):
-    def __init__(self, session):
-        super().__init__(session)
+    def __init__(self, session: Session):
+        self.likes_repository = RepoLikes(session)
 
     def createLike(self, tweetid: int, current_usr):
-        return super().createLike(tweetid, current_usr)
+        return self.likes_repository.createLike(tweetid, current_usr)
 
     def getLikesCount(self, tweetid: int, user_id: int):
-        return super().getLikesCount(tweetid, user_id)
+        return self.likes_repository.getLikesCount(tweetid, user_id)
 
     def checkLike(self, tweetid: int):
-        return super().checkLike(tweetid)
+        return self.likes_repository.checkLike(tweetid)
 
     def deleteLike(self, tweetid: int):
-        return super().deleteLike(tweetid)
+        return self.likes_repository.deleteLike(tweetid)
     
     def getLikesByUser(self, likedBy: int, tweet_id: int):
-        return super().getLikesByUser(likedBy, tweet_id)
+        return self.likes_repository.getLikesByUser(likedBy, tweet_id)
